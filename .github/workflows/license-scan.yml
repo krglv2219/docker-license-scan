@@ -1,0 +1,23 @@
+name: Docker License Scan
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  license-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: image
+          image-ref: alpine/openssl
+          format: table
+          exit-code: 1
+          severity: UNKNOWN
+          scanners: license
